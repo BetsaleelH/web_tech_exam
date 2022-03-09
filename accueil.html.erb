@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <h1>test！！！！！！！！！！！！！</h1>
+    
+
+      <% require 'pg' %>
+
+    <% connection = PG::connect(dbname: "goya") %>
+    <% connection.internal_encoding = "UTF-8" %>
+
+     <% result = connection.exec("select * from crops where date='2015-08-07';") %>
+    <% data = [] %>
+
+    <% result.each do |goya| %>
+      <% data <<"length: #{goya["length"]}, weigth: #{goya["weight"]}, quality: #{goya["quality"]}, give_for: #{goya["give_for"]}, date: #{goya["date"]} " %>
+    <% end %>
+
+    <form action="goodgoya.cgi" method="POST">
+       Appuyez sur le bouton ci-dessous pour accéder à la page d'informations sur le goya de bonne qualité.<br><br>
+       <!-- Attribuez les données que vous souhaitez envoyer à value -->
+       <!-- Utilisez name = "goya" comme marqueur d'information -->
+      <input type="text" name="goya" value="<%= data.join(' ') %>"><br><br>
+      <input type="submit" name="envoyer" >
+    </form>
+    <!------------------------------------------GOYABAD-------------------------------------->
+    <!------------------------------------------GOYABAD-------------------------------------->
+
+    <% result = connection.exec("select * from crops where date='2022-08-07';") %>
+    <% databad = [] %>
+
+    <% result.each do |goya| %>
+      <% databad <<"length: #{goya["length"]}, weigth: #{goya["weight"]}, quality: #{goya["quality"]}, give_for: #{goya["give_for"]}, date: #{goya["date"]} " %>
+    <% end %>
+
+    <form action="badgoya.cgi" method="POST">
+       Appuyez sur le bouton ci-dessous pour accéder à la page d'informations de goya de mauvaise qualité.<br><br>
+       <!-- Attribuez les données que vous souhaitez envoyer à value -->
+       <!-- Utilisez name = "goya" comme marqueur d'information -->
+      <input type="text" name="goya" value="<%= databad.join(' ') %>"><br><br>
+      <input type="submit" name="envoyer" >
+    </form>
+    
+  </body>
+</html>
